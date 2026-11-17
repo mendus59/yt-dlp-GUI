@@ -1,0 +1,20 @@
+{
+  "name": "YT Downloader",
+  "tagline": "A free Windows desktop GUI for yt-dlp, with a web companion that sends settings straight to the app.",
+  "summary": "An independent study project that wraps the open-source yt-dlp downloader in a simple Windows app. Paste a video, playlist or channel link, choose a max and min quality or audio-only, and download with live progress, per-video skip, cancel-all, and automatic skipping of failed videos. It ships as one self-contained exe (Python, yt-dlp and the deno JavaScript runtime bundled) built for free by GitHub Actions, and a GitHub Pages web app that builds ytdlp-gui:// links to open the desktop app pre-filled.",
+  "highlights": [
+    "Single-file Windows exe, no install or account",
+    "Min/max quality, audio-only (mp3, m4a, opus, wav, flac), playlists and channels, subtitles",
+    "Skip current video, cancel all, and keep going when a video fails",
+    "One-click ffmpeg setup for 1080p+ merging and audio conversion",
+    "Web page opens the app with settings filled in via a custom ytdlp-gui:// link",
+    "Free to run: built by GitHub Actions, hosted on GitHub Pages, downloads run on your own PC"
+  ],
+  "tech": ["Python", "Tkinter", "yt-dlp", "PyInstaller", "GitHub Actions", "GitHub Pages", "JavaScript"],
+  "links": {
+    "site": "https://mendus59.github.io/yt-dlp-GUI/",
+    "source": "https://github.com/mendus59/yt-dlp-GUI",
+    "download": "https://github.com/mendus59/yt-dlp-GUI/releases/latest/download/YT-Downloader.exe"
+  },
+  "image": "https://mendus59.github.io/yt-dlp-GUI/embed/icon.svg"
+}

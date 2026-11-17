@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YT Downloader</title>
+<meta name="description" content="A free Windows desktop app for yt-dlp, with a web page that sends your settings straight to the app.">
+<link rel="icon" href="embed/icon.svg" type="image/svg+xml">
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --text: #1d1d1f; --muted: #5f6368;
+  --border: #e2e2de; --accent: #c4302b; --accent-text: #ffffff; --code: #f0f0ec;
+  --ok: #1e7f4f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141414; --surface: #1e1e1e; --text: #ececec; --muted: #a0a0a0;
+    --border: #333; --accent: #ff5a52; --accent-text: #141414; --code: #262626; --ok: #5fd39a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141414; --surface: #1e1e1e; --text: #ececec; --muted: #a0a0a0;
+  --border: #333; --accent: #ff5a52; --accent-text: #141414; --code: #262626; --ok: #5fd39a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { font-size: 2.1rem; margin: 0 0 6px; letter-spacing: -0.02em; }
+h2 { font-size: 1.25rem; margin: 40px 0 12px; }
+p { margin: 0 0 12px; }
+.lead { color: var(--muted); font-size: 1.1rem; max-width: 60ch; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 20px 0; }
+.btn { display: inline-block; padding: 11px 18px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); text-decoration: none; font: inherit; font-weight: 600; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.btn:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.small { font-size: .875rem; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+input[type=text], select { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font: inherit; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 14px; }
+.checks { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; }
+.checks label { font-weight: 400; display: flex; gap: 6px; align-items: center; margin: 0; }
+pre { background: var(--code); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: .85rem;
+  white-space: pre-wrap; word-break: break-all; margin: 8px 0 0; }
+.steps { padding-left: 20px; } .steps li { margin-bottom: 6px; }
+.note { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; color: var(--muted); }
+#copied { color: var(--ok); font-size: .875rem; min-height: 1.2em; }
+footer { margin-top: 48px; font-size: .85rem; color: var(--muted); }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>YT Downloader</h1>
+  <p class="lead">A free, point-and-click Windows app for downloading video and audio, built on the open-source
+    <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> library. Pick your settings here, and the app opens with them filled in.</p>
+
+  <div class="row">
+    <a class="btn primary" id="dl" href="https://github.com/mendus59/yt-dlp-GUI/releases/latest/download/YT-Downloader.exe">Download for Windows</a>
+    <a class="btn" href="https://github.com/mendus59/yt-dlp-GUI">Source on GitHub</a>
+    <span class="small">One ~60 MB file. No install, no account, no cost.</span>
+  </div>
+
+  <h2>Send a download to the app</h2>
+  <div class="card">
+    <label for="url">Video, playlist or channel URL(s)</label>
+    <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=…  (separate several with spaces)" autocomplete="off">
+
+    <div class="grid">
+      <div><label for="mode">Type</label>
+        <select id="mode"><option value="video">Video</option><option value="audio">Audio only</option></select></div>
+      <div class="v"><label for="max">Max quality</label>
+        <select id="max"><option value="">Best available</option><option>2160</option><option>1440</option>
+          <option selected>1080</option><option>720</option><option>480</option><option>360</option></select></div>
+      <div class="v"><label for="min">Min quality</label>
+        <select id="min"><option value="">No minimum</option><option>1080</option><option>720</option>
+          <option>480</option><option>360</option></select></div>
+      <div class="a" hidden><label for="audio">Audio format</label>
+        <select id="audio"><option>mp3</option><option>m4a</option><option>opus</option><option>wav</option><option>flac</option></select></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="playlist"> Whole playlist</label>
+      <label><input type="checkbox" id="subs"> English subtitles</label>
+    </div>
+
+    <div class="row">
+      <a class="btn primary" id="open" href="#">Open in YT Downloader</a>
+      <button class="btn" id="copyCmd" type="button">Copy yt-dlp command</button>
+      <button class="btn" id="copyLink" type="button">Copy link to these settings</button>
+      <span id="copied" role="status"></span>
+    </div>
+    <p class="small">"Open in YT Downloader" works once you've run the app once on this PC. The app only fills in the form; nothing downloads until you click Download there.</p>
+    <pre id="cmd" aria-label="Equivalent yt-dlp command"></pre>
+  </div>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li>The Windows app wraps yt-dlp in a simple window: paste a link, pick quality, click Download. It shows progress and lets you skip a video or cancel the whole run.</li>
+    <li>It bundles everything it needs (Python, yt-dlp and the deno JavaScript runtime YouTube now requires). A one-click <b>Get ffmpeg</b> button adds ffmpeg for 1080p+ and mp3 conversion.</li>
+    <li>This page runs entirely in your browser. It builds a <code>ytdlp-gui://</code> link that Windows hands to the app, so your downloads happen on your own computer and connection.</li>
+    <li>The app and this site are built and hosted for free by GitHub Actions and GitHub Pages.</li>
+  </ol>
+
+  <h2>Why there's no "download here" button</h2>
+  <p class="note">A website can't run yt-dlp: GitHub Pages only serves static files, and browsers block pages from fetching
+    videos from other sites. A public server that downloads for anyone would cost money, get its IP blocked by YouTube
+    quickly, and invite abuse. Running downloads on your own PC keeps this free and reliable.</p>
+
+  <h2>Use it responsibly</h2>
+  <p class="small">Only download content you have the right to, such as your own uploads, Creative Commons or public-domain
+    material, or where the site permits it. YouTube's Terms of Service restrict downloading outside its own features.
+    You are responsible for how you use this tool.</p>
+
+  <footer>An independent study project. Built on yt-dlp (Unlicense). Not affiliated with YouTube or the yt-dlp project.</footer>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const f = { url: $('url'), mode: $('mode'), max: $('max'), min: $('min'), audio: $('audio'),
+              playlist: $('playlist'), subs: $('subs') };
+
+  // Pre-fill from this page's own query string (?url=...&max=1080...) so links can be shared.
+  const q = new URLSearchParams(location.search);
+  for (const [k, el] of Object.entries(f)) {
+    if (!q.has(k)) continue;
+    if (el.type === 'checkbox') el.checked = ['1', 'true'].includes(q.get(k));
+    else el.value = q.get(k);
+  }
+
+  const urls = () => f.url.value.trim().split(/\s+/).filter(u => /^https?:\/\//i.test(u));
+  const quote = s => '"' + s.replace(/"/g, '\\"') + '"';
+
+  function params() {
+    const p = new URLSearchParams();
+    p.set('url', urls().join(' '));
+    p.set('mode', f.mode.value);
+    if (f.mode.value === 'video') {
+      if (f.max.value) p.set('max', f.max.value);
+      if (f.min.value) p.set('min', f.min.value);
+    } else p.set('audio', f.audio.value);
+    if (f.playlist.checked) p.set('playlist', '1');
+    if (f.subs.checked) p.set('subs', '1');
+    return p;
+  }
+
+  function command() {
+    const a = ['yt-dlp'];
+    if (f.mode.value === 'video') {
+      const m = f.min.value ? `[height>=${f.min.value}]` : '';
+      a.push('-f', quote(`bv*${m}+ba/b${m}`));
+      a.push('-S', quote([f.max.value && `res:${f.max.value}`, 'vcodec:h264', 'ext:mp4:m4a'].filter(Boolean).join(',')));
+      a.push('--merge-output-format', 'mp4');
+    } else {
+      a.push('-f', 'ba/b', '-x', '--audio-format', f.audio.value, '--audio-quality', f.audio.value === 'mp3' ? '0' : '5');
+    }
+    a.push(f.playlist.checked ? '--yes-playlist' : '--no-playlist');
+    if (f.subs.checked) a.push('--write-subs', '--write-auto-subs', '--sub-langs', quote('en.*,en'));
+    a.push(...(urls().length ? urls().map(quote) : ['"<URL>"']));
+    return a.join(' ');
+  }
+
+  function update() {
+    const audio = f.mode.value === 'audio';
+    document.querySelectorAll('.v').forEach(e => e.hidden = audio);
+    document.querySelector('.a').hidden = !audio;
+    $('open').href = 'ytdlp-gui://open?' + params().toString();
+    $('cmd').textContent = command();
+    $('copied').textContent = '';
+  }
+
+  async function copy(text, msg) {
+    try { await navigator.clipboard.writeText(text); $('copied').textContent = msg; }
+    catch { $('copied').textContent = 'Copy failed. Select the text and copy it manually.'; }
+  }
+
+  $('open').addEventListener('click', e => {
+    if (!urls().length) { e.preventDefault(); f.url.focus(); $('copied').textContent = 'Paste a URL first.'; }
+  });
+  $('copyCmd').addEventListener('click', () => copy(command(), 'Command copied.'));
+  $('copyLink').addEventListener('click', () => {
+    const u = new URL(location.href.split('?')[0]); u.search = params().toString();
+    copy(u.toString(), 'Link copied.');
+  });
+  Object.values(f).forEach(el => el.addEventListener('input', update));
+  update();
+})();
+</script>
+</body>
+</html>

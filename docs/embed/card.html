@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YT Downloader card</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  body { padding: 4px; }
+</style>
+</head>
+<body>
+<!-- For sites that can't run scripts: <iframe src="https://mendus59.github.io/yt-dlp-GUI/embed/card.html" ...> -->
+<script src="embed.js" defer></script>
+<ytdlp-gui-card></ytdlp-gui-card>
+<script>
+  // ?theme=dark&compact pass through to the card
+  const q = new URLSearchParams(location.search), c = document.querySelector('ytdlp-gui-card');
+  if (q.get('theme')) c.setAttribute('theme', q.get('theme'));
+  if (q.has('compact')) c.setAttribute('compact', '');
+</script>
+</body>
+</html>
