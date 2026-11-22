@@ -1,5 +1,18 @@
 # YT Downloader (yt-dlp GUI)
 
+<!-- site-summary:start -->
+<!-- This section is this project's card on https://mendus59.github.io and is copied there daily.
+     Keep it true of what's on main: one plain-text summary line (max 160 characters), then 1-6 short bullets.
+     See CLAUDE.md ("Site summary"). -->
+A free Windows desktop app that puts a simple window on top of yt-dlp, with a web app that opens it with your settings filled in.
+
+- Paste video, playlist or channel URLs and download video, with a maximum and minimum quality, or audio only as mp3, m4a, opus, wav or flac.
+- Live progress, skip the current video or cancel all, and keep going when one video fails.
+- Optional English subtitles and video IDs in file names; a Get ffmpeg button sets up 1080p+ merging and audio conversion.
+- One Windows 10/11 exe with Python, yt-dlp and deno bundled, so there is nothing to install.
+- The web app builds your settings and opens the desktop app with them through a ytdlp-gui:// link.
+<!-- site-summary:end -->
+
 A free Windows desktop app that puts a simple window on top of
 [yt-dlp](https://github.com/yt-dlp/yt-dlp), plus a GitHub Pages web app that
 opens the desktop app with your settings filled in.
