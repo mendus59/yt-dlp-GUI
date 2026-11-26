@@ -13,6 +13,9 @@ A free Windows desktop app that puts a simple window on top of yt-dlp, with a we
 - The web app builds your settings and opens the desktop app with them through a ytdlp-gui:// link.
 <!-- site-summary:end -->
 
+<!-- site-screenshot: docs/screenshot.jpg -->
+![Screenshot of YT Downloader (yt-dlp GUI)](docs/screenshot.jpg)
+
 A free Windows desktop app that puts a simple window on top of
 [yt-dlp](https://github.com/yt-dlp/yt-dlp), plus a GitHub Pages web app that
 opens the desktop app with your settings filled in.
